@@ -31,6 +31,8 @@ RSpec.describe "User Registration" do
     
     fill_in :user_name, with: 'User Two'
     fill_in :user_email, with:'notunique@example.com'
+    fill_in :user_password, with: 'loki123'
+    fill_in :user_password_confirmation, with: 'loki123'
     click_button 'Create New User'
 
     expect(current_path).to eq(register_path)
