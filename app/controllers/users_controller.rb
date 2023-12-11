@@ -8,17 +8,17 @@ class UsersController <ApplicationController
   end 
 
   def create 
-    if params[:password] == params[:password_confirmation]
+    if params[:user][:password] == params[:user][:password_confirmation]
       user = User.create(user_params)
-      session[:user_id] = user.id 
       if user.save
+        session[:user_id] = user.id 
         redirect_to user_path(user)
       else  
         flash[:error] = user.errors.full_messages.to_sentence
         redirect_to register_path
       end
     else 
-      flash[:error] = user.errors.full_messages.to_sentence
+      flash[:error] = "Password and password confirmation do not match."
       redirect_to register_path
     end 
   end 

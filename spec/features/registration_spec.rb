@@ -22,6 +22,9 @@ RSpec.describe "User Registration" do
     fill_in :user_password, with: 'loki123'
     fill_in :user_password_confirmation, with: 'loki321'
     click_button 'Create New User'
+
+    expect(current_path).to eq(register_path)
+    expect(page).to have_content("Password and password confirmation do not match.")
   end 
 
   it 'does not create a user if email isnt unique' do 
