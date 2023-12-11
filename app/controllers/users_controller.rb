@@ -20,7 +20,7 @@ class UsersController <ApplicationController
   def login_form
   end
 
-  def login 
+  def login_user 
     user = User.find_by(email: params[:email])
 
     if user.authenticate(params[:password])
