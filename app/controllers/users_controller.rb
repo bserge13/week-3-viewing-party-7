@@ -8,10 +8,16 @@ class UsersController <ApplicationController
   end 
 
   def create 
-    user = User.create(user_params)
-    if user.save
-      redirect_to user_path(user)
-    else  
+    if params[:password] == params[:password_confirmation]
+      user = User.create(user_params)
+      session[:user_id] = user.id 
+      if user.save
+        redirect_to user_path(user)
+      else  
+        flash[:error] = user.errors.full_messages.to_sentence
+        redirect_to register_path
+      end
+    else 
       flash[:error] = user.errors.full_messages.to_sentence
       redirect_to register_path
     end 
@@ -20,6 +26,6 @@ class UsersController <ApplicationController
   private 
 
   def user_params 
-    params.require(:user).permit(:name, :email)
+    params.require(:user).permit(:name, :email, :password) 
   end 
 end 
