@@ -1,7 +1,7 @@
 class User <ApplicationRecord 
-  validates_presence_of :email, :name 
+  validates_presence_of :email, :name, :password 
   validates_uniqueness_of :email
+  validates_confirmation_of :password
   has_many :viewing_parties
-  validates_presence_of :password
   has_secure_password
 end 
