@@ -5,6 +5,8 @@ RSpec.describe "User Log In" do
     visit '/'
 
     expect(page).to have_link('Log In')
+    expect(page).to_not have_link('Log Out')
+    expect(page).to_not have_content('existing users')
 
     click_link('Log In')
     expect(current_path).to eq('/login')
