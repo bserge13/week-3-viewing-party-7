@@ -77,5 +77,6 @@ RSpec.describe "User Log In" do
     expect(page).to_not have_link('Log In')
     expect(page).to have_link('Log Out')
     expect(page).to have_content("Existing Users:")
+    expect(page).to_not have_link(user.email)
   end
 end
