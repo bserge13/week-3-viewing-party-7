@@ -2,18 +2,18 @@ require 'rails_helper'
 
 RSpec.describe "User Log In" do
   it 'has a link to login a user' do 
-    visit '/'
+    visit root_path
 
     expect(page).to have_link('Log In')
     expect(page).to_not have_link('Log Out')
-    expect(page).to_not have_content('existing users')
+    expect(page).to_not have_content("Existing Users:")
 
     click_link('Log In')
-    expect(current_path).to eq('/login')
+    expect(current_path).to eq(login_path)
   end
 
   it 'can log in a user with valid credentialss' do 
-    visit '/login'
+    visit login_path
 
     expect(page).to have_content('Email:')
     expect(page).to have_content('Password:')
@@ -46,7 +46,7 @@ RSpec.describe "User Log In" do
   end
 
   it 'logs a user out of their session' do 
-    visit '/login'
+    visit login_path
     user = User.create(name: 'Eric Bachmann', email: 'bachmanity_rocks@gmail.com', password: 'jingyangsux')
 
     fill_in :email, with: user.email 
@@ -62,5 +62,20 @@ RSpec.describe "User Log In" do
     expect(page).to have_link('Log In')
     expect(page).to_not have_link('Log Out')
     expect(page).to have_button('Create New User')
+  end
+
+  it 'shows a list of existing users if signed in' do 
+    user = User.create(name: 'Eric Bachmann', email: 'bachmanity_rocks@gmail.com', password: 'jingyangsux')
+    visit login_path
+
+    fill_in :email, with: user.email 
+    fill_in :password, with: user.password 
+    click_button('Log In')
+
+    visit root_path
+
+    expect(page).to_not have_link('Log In')
+    expect(page).to have_link('Log Out')
+    expect(page).to have_content("Existing Users:")
   end
 end
