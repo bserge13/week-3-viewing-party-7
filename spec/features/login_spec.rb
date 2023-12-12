@@ -23,7 +23,7 @@ RSpec.describe "User Log In" do
     fill_in :password, with: user.password 
     
     click_button('Log In')
-    expect(current_path).to eq(root_path)
+    expect(current_path).to eq(user_path(user))
 
     expect(page).to have_content("Welcome, #{user.name}")
   end
@@ -41,5 +41,24 @@ RSpec.describe "User Log In" do
     expect(current_path).to eq(login_path)
   
     expect(page).to have_content('Sorry, your credentials are bad.')
+  end
+
+  it 'logs a user out of their session' do 
+    visit '/login'
+    user = User.create(name: 'Eric Bachmann', email: 'bachmanity_rocks@gmail.com', password: 'jingyangsux')
+
+    fill_in :email, with: user.email 
+    fill_in :password, with: user.password 
+    
+    click_button('Log In')
+    expect(current_path).to eq(user_path(user))
+    expect(page).to have_link('Log Out')
+    
+    click_link('Log Out')
+    expect(current_path).to eq(root_path)
+
+    expect(page).to have_link('Log In')
+    expect(page).to_not have_link('Log Out')
+    expect(page).to have_button('Create New User')
   end
 end

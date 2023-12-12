@@ -11,7 +11,7 @@ RSpec.describe 'Movies Index Page' do
   end 
 
   it 'shows all movies' do 
-    visit "users/#{@user1.id}"
+    visit "/users/#{@user1.id}"
 
     click_button "Find Top Rated Movies"
 
