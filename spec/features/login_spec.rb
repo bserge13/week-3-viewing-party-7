@@ -64,7 +64,7 @@ RSpec.describe "User Log In" do
     expect(page).to have_button('Create New User')
   end
 
-  it 'shows a list of existing users if signed in' do 
+  it 'shows only a list of existing users if signed in as a default user' do 
     user = User.create(name: 'Eric Bachmann', email: 'bachmanity_rocks@gmail.com', password: 'jingyangsux')
     visit login_path
 
@@ -79,4 +79,21 @@ RSpec.describe "User Log In" do
     expect(page).to have_content("Existing Users:")
     expect(page).to_not have_link(user.email)
   end
+
+  it 'shows links of existing users if signed in as an admin user' do 
+    user = User.create(name: 'Eric Bachmann', email: 'bachmanity_rocks@gmail.com', password: 'jingyangsux', role: 1)
+    visit login_path
+
+    fill_in :email, with: user.email 
+    fill_in :password, with: user.password 
+    click_button('Log In')
+
+    visit root_path
+
+    expect(page).to_not have_link('Log In')
+    expect(page).to have_link('Log Out')
+    expect(page).to have_content("Existing Users:")
+    expect(page).to have_link(user.email)
+  end
+
 end
