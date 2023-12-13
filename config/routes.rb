@@ -9,6 +9,7 @@ Rails.application.routes.draw do
   get '/login', to: 'users#login_form'
   post '/login', to: 'users#login_user' 
   delete '/logout', to: 'users#logout_user'  
+  get '/users/:id', to: 'users#show', as: 'dashboard'
 
   resources :users, only: :show
 

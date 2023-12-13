@@ -96,4 +96,13 @@ RSpec.describe "User Log In" do
     expect(page).to have_link(user.email)
   end
 
+  it 'will not route a user to their dashboard page unless signed in' do 
+    user = User.create(name: 'Eric Bachmann', email: 'bachmanity_rocks@gmail.com', password: 'jingyangsux')
+
+    visit root_path
+    
+    visit dashboard_path(user)
+    expect(current_path).to eq(root_path)
+    expect(page).to have_content('You must be logged in or registered to access your dashboard')
+  end 
 end
