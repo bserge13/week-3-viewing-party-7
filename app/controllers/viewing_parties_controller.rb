@@ -5,9 +5,14 @@ class ViewingPartiesController < ApplicationController
   end 
   
   def create 
-    user = User.find(params[:user_id])
-    user.viewing_parties.create(viewing_party_params)
-    redirect_to "/users/#{params[:user_id]}"
+    if current_user
+      user = User.find(params[:user_id])
+      user.viewing_parties.create(viewing_party_params)
+      redirect_to "/users/#{params[:user_id]}"
+    else 
+      redirect_to movie_path(user, movie)
+      flash[:error] = 'You must be logged in or registered to create a movie party'
+    end 
   end 
 
   private 

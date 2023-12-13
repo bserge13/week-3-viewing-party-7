@@ -105,4 +105,15 @@ RSpec.describe "User Log In" do
     expect(current_path).to eq(root_path)
     expect(page).to have_content('You must be logged in or registered to access your dashboard')
   end 
+
+  it 'will not create a viewing party unless the user is logged in' do 
+    user = User.create(name: 'Eric Bachmann', email: 'bachmanity_rocks@gmail.com', password: 'jingyangsux')
+    movie = Movie.create(title: 'Silicon Valley: The Rise of Bachmanity', rating: 10, description: 'The greatest piece of cinematics since the Davinci of the sea, Titanic...that glorious, majestic maiden of the blue.')
+
+    visit movie_path(user, movie)
+
+    click_button('Create a Viewing Party')
+    expect(current_path).to eq(movie_path(user, movie))
+    expect(page).to have_content('You must be logged in or registered to create a movie party')
+  end
 end
